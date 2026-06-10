@@ -6,6 +6,8 @@
   "bin": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index.js",
+    "register": "node command.js",
     "build": "pkg . --targets node18-win-x64 --output bot.exe"
   },
   "dependencies": {
@@ -15,6 +17,7 @@
     "node-cron": "^3.0.3"
   },
   "devDependencies": {
+    "nodemon": "^3.1.14",
     "pkg": "^5.8.1"
   },
   "pkg": {

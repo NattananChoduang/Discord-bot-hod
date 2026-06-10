@@ -38,7 +38,7 @@
 ### 1. การเตรียมความพร้อม
 *   ติดตั้ง [Node.js](https://nodejs.org/) (เวอร์ชัน 18 ขึ้นไป)
 *   สมัครบัญชี [Supabase](https://supabase.com/) และสร้างโปรเจกต์ใหม่
-*   คัดลอกโปรเจกต์ (Clone): `git clone https://github.com/your-username/your-repo-name.git`
+*   คัดลอกโปรเจกต์ (Clone)
 
 ### 2. การตั้งค่า Environment (.env)
 เนื่องจากไฟล์ `.env` จะไม่ถูกเก็บไว้บน Git เพื่อความปลอดภัย ให้คุณสร้างไฟล์ใหม่ขึ้นมา:
