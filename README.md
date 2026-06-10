@@ -87,7 +87,6 @@ ALTER TABLE attendance DISABLE ROW LEVEL SECURITY;
 | `/poll [question] [opt1-5]` | Slash | สร้างโพลโหวต (ใส่ได้สูงสุด 5 ตัวเลือก) |
 | `/remind [msg] [h/m/s]` | Slash | ตั้งเวลาเตือนความจำ |
 | `/ping` | Slash | ทดสอบความหน่วงของบอท |
-| `!hello` | Prefix | ข้อความทักทายพื้นฐาน |
 
 ---
 
