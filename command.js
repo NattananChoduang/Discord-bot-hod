@@ -100,15 +100,12 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 (async () => {
   try {
-    console.log('🧹 กำลังล้างคำสั่งแบบ Global...');
-    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: [] });
-
-    console.log(`📡 กำลังลงทะเบียนคำสั่งในเซิร์ฟเวอร์: ${GUILD_ID}...`);
+    console.log('📡 กำลังลงทะเบียนคำสั่งแบบ Global (อาจใช้เวลา 10-60 นาทีในการอัปเดตทุกเซิร์ฟเวอร์)...');
     await rest.put(
-      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+      Routes.applicationCommands(CLIENT_ID),
       { body: commands }
     );
-    console.log('✅ อัปเดตคำสั่งสำเร็จ! (เพิ่มตัวเลือกเวลาใน Reminder เรียบร้อย)');
+    console.log('✅ ลงทะเบียนคำสั่งแบบ Global สำเร็จ!');
   } catch (error) {
     console.error('❌ เกิดข้อผิดพลาด:', error);
   }

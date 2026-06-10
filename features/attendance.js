@@ -12,9 +12,11 @@ module.exports = (client) => {
         const userId = interaction.user.id;
         const inputName = interaction.options.getString('name');
         
-        const today = new Date().toISOString().split('T')[0];
+        // ดึงวันที่ปัจจุบันตามเวลาไทย (Asia/Bangkok)
+        const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Bangkok' });
         
         const internationalTimestamp = new Date().toLocaleString('en-GB', {
+            timeZone: 'Asia/Bangkok', // แสดงผลเวลาไทยในข้อความตอบกลับด้วย
             day: '2-digit',
             month: 'short',
             year: 'numeric',
@@ -31,6 +33,7 @@ module.exports = (client) => {
                 .from('attendance')
                 .select('*')
                 .eq('user_id', userId)
+                .eq('guild_id', interaction.guildId) // เพิ่มการเช็คตาม Guild ID
                 .eq('checkin_date', today)
                 .single();
 
@@ -40,7 +43,7 @@ module.exports = (client) => {
             }
 
             if (existing) {
-                return interaction.editReply('❌ วันนี้คุณเช็คชื่อไปแล้วครับ! มาใหม่พรุ่งนี้นะ');
+                return interaction.editReply('❌ วันนี้คุณเช็คชื่อในเซิร์ฟเวอร์นี้ไปแล้วครับ! มาใหม่พรุ่งนี้นะ');
             }
 
             const { error: insertError } = await supabase
@@ -48,6 +51,8 @@ module.exports = (client) => {
                 .insert([
                     { 
                         user_id: userId, 
+                        guild_id: interaction.guildId,
+                        guild_name: interaction.guild.name, // เก็บชื่อเซิร์ฟเวอร์เพื่อให้ดูง่ายขึ้น
                         user_name: inputName, 
                         checkin_date: today 
                     }

@@ -59,11 +59,14 @@ ACCESS_KEY=รหัสผ่านสำหรับเข้าใช้งา
 CREATE TABLE attendance (
   id bigint primary key generated always as identity,
   user_id text not null,
+  guild_id text not null, -- ไอดีเซิร์ฟเวอร์
+  guild_name text,        -- ชื่อเซิร์ฟเวอร์ (ช่วยให้ดูข้อมูลใน DB ง่ายขึ้น)
   user_name text,
   checkin_date date default current_date,
   created_at timestamptz default now()
 );
-CREATE INDEX idx_user_date ON attendance(user_id, checkin_date);
+-- สร้าง Index สำหรับการค้นหาที่รวดเร็ว (เช็คชื่อซ้ำแยกตาม User และ Guild)
+CREATE INDEX idx_user_guild_date ON attendance(user_id, guild_id, checkin_date);
 ALTER TABLE attendance DISABLE ROW LEVEL SECURITY;
 ```
 
