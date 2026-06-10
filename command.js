@@ -94,13 +94,26 @@ const commands = [
       },
     ],
   },
+  {
+    name: 'help',
+    description: 'แสดงเมนูช่วยเหลือและวิธีใช้งาน 📖',
+  },
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
+const args = process.argv.slice(2);
+
 (async () => {
   try {
-    console.log('📡 กำลังลงทะเบียนคำสั่งแบบ Global (อาจใช้เวลา 10-60 นาทีในการอัปเดตทุกเซิร์ฟเวอร์)...');
+    if (args.includes('--clean')) {
+      console.log('🧹 กำลังล้างคำสั่งในเซิร์ฟเวอร์ (Guild Commands)...');
+      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: [] });
+      console.log('✅ ล้างคำสั่งในเซิร์ฟเวอร์สำเร็จ!');
+      return;
+    }
+
+    console.log('📡 กำลังลงทะเบียนคำสั่งแบบ Global...');
     await rest.put(
       Routes.applicationCommands(CLIENT_ID),
       { body: commands }

@@ -7,6 +7,7 @@ const pingFeature = require('./features/ping.js');
 const attendanceFeature = require('./features/attendance.js');
 const remindersFeature = require('./features/reminders.js');
 const pollFeature = require('./features/poll.js');
+const helpFeature = require('./features/help.js');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -24,6 +25,7 @@ const startApp = () => {
         attendanceFeature(client);
         remindersFeature(client);
         pollFeature(client);
+        helpFeature(client);
 
         console.log("✅ ระบบทำงานสมบูรณ์: โหลดฟีเจอร์และปลั๊กอินทั้งหมดเรียบร้อยแล้ว!");
     });
