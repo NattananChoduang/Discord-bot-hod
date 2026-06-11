@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, MessageFlags } = require('discord.js');
 
 module.exports = (client) => {
     client.on(Events.InteractionCreate, async (interaction) => {
@@ -16,7 +16,7 @@ module.exports = (client) => {
             const totalMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
             if (totalMs <= 0) {
-                return await interaction.reply({ content: '❌ กรุณาระบุเวลาให้มากกว่า 0 วินาทีครับ', ephemeral: true });
+                return await interaction.reply({ content: '❌ กรุณาระบุเวลาให้มากกว่า 0 วินาทีครับ', flags: [MessageFlags.Ephemeral] });
             }
 
             // สร้างข้อความสรุปเวลาที่ตั้ง

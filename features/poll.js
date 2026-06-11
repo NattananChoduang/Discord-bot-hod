@@ -23,11 +23,11 @@ module.exports = (client) => {
     ensureDB();
 
     client.on(Events.InteractionCreate, async (interaction) => {
-        const db = readDB();
-        if (!db.polls) db.polls = {};
-
         // --- 1. สร้าง Poll (Slash Command) ---
         if (interaction.isChatInputCommand() && interaction.commandName === 'poll') {
+            const db = readDB();
+            if (!db.polls) db.polls = {};
+
             const question = interaction.options.getString('question');
             const pollId = Date.now().toString();
             
@@ -72,37 +72,49 @@ module.exports = (client) => {
 
         // --- 2. จัดการการคลิกปุ่มโหวต ---
         if (interaction.isButton() && interaction.customId.startsWith('poll_')) {
-            const [, pollId, optionId] = interaction.customId.split('_');
-            const poll = db.polls[pollId];
+            try {
+                const db = readDB();
+                const [, pollId, optionId] = interaction.customId.split('_');
+                const poll = db.polls ? db.polls[pollId] : null;
 
-            if (!poll) {
-                return await interaction.reply({ content: '❌ ไม่พบข้อมูลโหวตนี้ในระบบ', flags: [MessageFlags.Ephemeral] });
+                if (!poll) {
+                    return await interaction.reply({ content: '❌ ไม่พบข้อมูลโหวตนี้ในระบบ', flags: [MessageFlags.Ephemeral] });
+                }
+
+                const userId = interaction.user.id;
+                // ตรวจสอบว่าเคยโหวตในตัวเลือกใดตัวเลือกหนึ่งของ poll นี้ไปหรือยัง
+                const alreadyVoted = poll.options.some(opt => opt.votes.includes(userId));
+
+                if (alreadyVoted) {
+                    return await interaction.reply({ content: '❌ คุณเคยโหวตไปแล้วครับ!', flags: [MessageFlags.Ephemeral] });
+                }
+
+                // ค้นหาตัวเลือกที่เลือกและเพิ่มคะแนน
+                const targetOption = poll.options.find(opt => opt.id === optionId);
+                if (targetOption) {
+                    targetOption.votes.push(userId);
+                    writeDB(db);
+                }
+
+                // อัปเดตข้อความ Embed ใหม่
+                const updatedDescription = poll.options.map((opt, index) => 
+                    `${emojiMap[index]} ${opt.text} (${opt.votes.length})`
+                ).join('\n');
+
+                if (!interaction.message.embeds || interaction.message.embeds.length === 0) {
+                    return await interaction.reply({ content: '❌ ไม่พบข้อมูลการแสดงผลของโพลนี้', flags: [MessageFlags.Ephemeral] });
+                }
+
+                const updatedEmbed = EmbedBuilder.from(interaction.message.embeds[0])
+                    .setDescription(`**หัวข้อ:** ${poll.question}\n\n${updatedDescription}`);
+
+                await interaction.update({ embeds: [updatedEmbed] });
+            } catch (error) {
+                console.error('Error handling poll button:', error);
+                if (!interaction.replied && !interaction.deferred) {
+                    await interaction.reply({ content: '❌ เกิดข้อผิดพลาดในการประมวลผลการโหวต', flags: [MessageFlags.Ephemeral] });
+                }
             }
-
-            const userId = interaction.user.id;
-            // ตรวจสอบว่าเคยโหวตในตัวเลือกใดตัวเลือกหนึ่งของ poll นี้ไปหรือยัง
-            const alreadyVoted = poll.options.some(opt => opt.votes.includes(userId));
-
-            if (alreadyVoted) {
-                return await interaction.reply({ content: '❌ คุณเคยโหวตไปแล้วครับ!', flags: [MessageFlags.Ephemeral] });
-            }
-
-            // ค้นหาตัวเลือกที่เลือกและเพิ่มคะแนน
-            const targetOption = poll.options.find(opt => opt.id === optionId);
-            if (targetOption) {
-                targetOption.votes.push(userId);
-                writeDB(db);
-            }
-
-            // อัปเดตข้อความ Embed ใหม่
-            const updatedDescription = poll.options.map((opt, index) => 
-                `${emojiMap[index]} ${opt.text} (${opt.votes.length})`
-            ).join('\n');
-
-            const updatedEmbed = EmbedBuilder.from(interaction.message.embeds[0])
-                .setDescription(`**หัวข้อ:** ${poll.question}\n\n${updatedDescription}`);
-
-            await interaction.update({ embeds: [updatedEmbed] });
         }
     });
 };

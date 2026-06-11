@@ -53,7 +53,7 @@ TOKEN=รหัส_DISCORD_BOT_TOKEN
 CLIENT_ID=ไอดี_DISCORD_APPLICATION_ID
 SUPABASE_URL=ลิงก์_API_URL_ของ_SUPABASE
 SUPABASE_KEY=รหัส_ANON_KEY_ของ_SUPABASE
-DATABASE_URL=ลิงก์_Connection_String_ของ_SUPABASE (สำหรับตั้งค่าอัตโนมัติ)
+DATABASE_URL=ลิงก์_Connection_String_ของ_SUPABASE 
 ```
 
 ### 3. การตั้งค่าฐานข้อมูล (อัตโนมัติ)
