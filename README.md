@@ -31,6 +31,7 @@
 ├── command.js          # สคริปต์สำหรับลงทะเบียน Slash Commands 
 ├── setup-db.js         # สคริปต์ตั้งค่าฐานข้อมูล Supabase อัตโนมัติ 
 ├── database.json       # ฐานข้อมูลท้องถิ่น (สำหรับระบบ Poll)
+├── nodemon.json        # ตั้งค่า Nodemon เพื่อข้ามการรีสตาร์ทเมื่อฐานข้อมูลเปลี่ยน
 └── .env                # ไฟล์เก็บความลับ (Token, Keys, API URL)
 ```
 
