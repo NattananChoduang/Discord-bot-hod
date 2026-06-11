@@ -28,8 +28,9 @@
 │   ├── help.js         # ระบบช่วยเหลือ
 │   └── ping.js         # ระบบทดสอบการเชื่อมต่อ
 ├── index.js            # จุดเริ่มต้นโปรแกรม (Entry Point)
-├── command.js          # สคริปต์สำหรับลงทะเบียน Slash Commands
-├── database.json       # ฐานข้อมูลท้องถิ่น (สำหรับระบบโพล)
+├── command.js          # สคริปต์สำหรับลงทะเบียน Slash Commands 
+├── setup-db.js         # สคริปต์ตั้งค่าฐานข้อมูล Supabase อัตโนมัติ 
+├── database.json       # ฐานข้อมูลท้องถิ่น (สำหรับระบบ Poll)
 └── .env                # ไฟล์เก็บความลับ (Token, Keys, API URL)
 ```
 

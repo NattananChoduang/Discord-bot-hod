@@ -3,5 +3,3 @@ node_modules
 database.json
 *.exe
 GEMINI.md
-
-database/*.json

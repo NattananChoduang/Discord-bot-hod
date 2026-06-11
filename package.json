@@ -26,7 +26,7 @@
     "assets": [
       "features/**/*",
       "core/**/*",
-      "database/**/*"
+      "database.json"
     ]
   }
 }

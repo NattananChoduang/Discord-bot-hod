@@ -1,13 +1,27 @@
 const { Events, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const fs = require('fs');
 
-const dbPath = './database/database.json';
-const readDB = () => JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+const dbPath = './database.json';
+
+// ตรวจสอบและสร้างไฟล์ฐานข้อมูลอัตโนมัติ
+const ensureDB = () => {
+    if (!fs.existsSync(dbPath)) {
+        fs.writeFileSync(dbPath, JSON.stringify({ polls: {} }, null, 2));
+    }
+};
+
+const readDB = () => {
+    ensureDB();
+    return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+};
 const writeDB = (data) => fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
 
 const emojiMap = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 
 module.exports = (client) => {
+    // สร้างฐานข้อมูลทันทีที่โหลดฟีเจอร์นี้ (ตอนเริ่มบอท)
+    ensureDB();
+
     client.on(Events.InteractionCreate, async (interaction) => {
         const db = readDB();
         if (!db.polls) db.polls = {};
