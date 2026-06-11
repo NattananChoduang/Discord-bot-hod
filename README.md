@@ -10,7 +10,7 @@
 *   **🗳️ ระบบโหวต (Poll System):** สร้างโพลถามตอบได้สูงสุด 5 ตัวเลือก พร้อมปุ่มกดโต้ตอบ (Interactive Buttons) และแสดงผลคะแนนแบบ Real-time
 *   **⏰ ระบบแจ้งเตือน (Reminder System):** ตั้งเวลาเตือนความจำล่วงหน้าได้ทั้งหน่วย ชั่วโมง, นาที และวินาที
 *   **📖 ระบบช่วยเหลือ (Help System):** แสดงรายการคำสั่งและวิธีการใช้งานทั้งหมดผ่านคำสั่ง `/help`
-*   **🔒 ระบบรักษาความปลอดภัย:** ล็อคการเข้าถึงซอร์สโค้ดด้วยระบบ **Access Key** และรองรับการ Compile เป็นไฟล์ `.exe` เพื่อป้องกันการแก้ไขโค้ด
+*   **🔒 ความปลอดภัย:** รองรับการ Compile เป็นไฟล์ `.exe` เพื่อความสะดวกในการแจกจ่ายและใช้งาน
 
 ---
 
@@ -27,7 +27,7 @@
 │   ├── reminders.js    # ระบบแจ้งเตือน
 │   ├── help.js         # ระบบช่วยเหลือ
 │   └── ping.js         # ระบบทดสอบการเชื่อมต่อ
-├── index.js            # จุดเริ่มต้นโปรแกรม (Entry Point) และด่านตรวจ Access Key
+├── index.js            # จุดเริ่มต้นโปรแกรม (Entry Point)
 ├── command.js          # สคริปต์สำหรับลงทะเบียน Slash Commands
 ├── database.json       # ฐานข้อมูลท้องถิ่น (สำหรับระบบโพล)
 └── .env                # ไฟล์เก็บความลับ (Token, Keys, API URL)
@@ -52,31 +52,18 @@ TOKEN=รหัส_DISCORD_BOT_TOKEN
 CLIENT_ID=ไอดี_DISCORD_APPLICATION_ID
 SUPABASE_URL=ลิงก์_API_URL_ของ_SUPABASE
 SUPABASE_KEY=รหัส_ANON_KEY_ของ_SUPABASE
-ACCESS_KEY=รหัสผ่านสำหรับเข้าใช้งานบอท 
+DATABASE_URL=ลิงก์_Connection_String_ของ_SUPABASE (สำหรับตั้งค่าอัตโนมัติ)
 ```
 
-### 3. การตั้งค่าฐานข้อมูล (Supabase SQL)
-รันคำสั่ง SQL นี้ใน SQL Editor ของ Supabase เพื่อสร้างตารางสำหรับระบบเช็คชื่อ:
-```sql
-CREATE TABLE attendance (
-  id bigint primary key generated always as identity,
-  user_id text not null,
-  guild_id text not null, -- ไอดีเซิร์ฟเวอร์
-  guild_name text,        -- ชื่อเซิร์ฟเวอร์ (ช่วยให้ดูข้อมูลใน DB ง่ายขึ้น)
-  user_name text,
-  checkin_date date default current_date,
-  created_at timestamptz default now()
-);
--- สร้าง Index สำหรับการค้นหาที่รวดเร็ว (เช็คชื่อซ้ำแยกตาม User และ Guild)
-CREATE INDEX idx_user_guild_date ON attendance(user_id, guild_id, checkin_date);
-ALTER TABLE attendance DISABLE ROW LEVEL SECURITY;
-```
+### 3. การตั้งค่าฐานข้อมูล (อัตโนมัติ)
+คุณไม่จำเป็นต้องนำ SQL ไปวางเองบนหน้าเว็บ เพียงแค่รันคำสั่งนี้:
+1.  ติดตั้ง Dependencies: `npm install`
+2.  รันคำสั่งตั้งค่า: `npm run setup`
+    *สคริปต์จะสร้างตาราง `attendance` และ Index ให้คุณเองอัตโนมัติ*
 
 ### 4. เริ่มรันระบบ
-1.  ติดตั้ง Dependencies: `npm install`
-2.  ลงทะเบียนคำสั่ง Slash Commands: `node command.js`
-3.  เริ่มรันบอท: `npm start`
-4.  กรอก **Access Key** ที่คุณตั้งไว้ใน `.env` เพื่อเริ่มต้นการทำงาน
+1.  ลงทะเบียนคำสั่ง Slash Commands: `node command.js`
+2.  เริ่มรันบอท: `npm start`
 
 
 ---
@@ -98,4 +85,4 @@ ALTER TABLE attendance DISABLE ROW LEVEL SECURITY;
 *   **Language:** Node.js (CommonJS)
 *   **Library:** Discord.js v14
 *   **Database:** Supabase (PostgreSQL) & Local JSON
-*   **Security:** pkg (Executable Packager) & Access Key Layer
+*   **Security:** pkg (Executable Packager)

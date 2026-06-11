@@ -1,7 +1,7 @@
 const { Events, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const fs = require('fs');
 
-const dbPath = './database.json';
+const dbPath = './database/database.json';
 const readDB = () => JSON.parse(fs.readFileSync(dbPath, 'utf8'));
 const writeDB = (data) => fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
 

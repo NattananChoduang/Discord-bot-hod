@@ -8,13 +8,15 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "register": "node command.js",
+    "setup": "node setup-db.js",
     "build": "pkg . --targets node18-win-x64 --output bot.exe"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "pg": "^8.21.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
@@ -24,7 +26,7 @@
     "assets": [
       "features/**/*",
       "core/**/*",
-      "database.json"
+      "database/**/*"
     ]
   }
 }
