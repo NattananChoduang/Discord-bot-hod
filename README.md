@@ -16,22 +16,24 @@
 
 ## 📂 โครงสร้างโปรเจกต์ (Project Structure)
 
-โปรเจกต์นี้ใช้โครงสร้างแบบแยกส่วน (Modular) เพื่อความเป็นระเบียบและง่ายต่อการบำรุงรักษา:
+โปรเจกต์นี้ใช้โครงสร้างแบบแยกส่วน (Modular) และแยกซอร์สโค้ดออกจากสคริปต์อรรถประโยชน์เพื่อความเป็นระเบียบ:
 
 ```text
-├── core/               # ระบบแกนหลัก (Engine) ของบอท
-│   └── app.js          # จัดการการเชื่อมต่อ Discord API และ SDK
-├── features/           # ปลั๊กอินฟีเจอร์ต่างๆ
-│   ├── attendance.js   # ระบบเช็คชื่อ (Supabase)
-│   ├── poll.js         # ระบบโหวต (Local JSON)
-│   ├── reminders.js    # ระบบแจ้งเตือน
-│   ├── help.js         # ระบบช่วยเหลือ
-│   └── ping.js         # ระบบทดสอบการเชื่อมต่อ
-├── index.js            # จุดเริ่มต้นโปรแกรม (Entry Point)
-├── command.js          # สคริปต์สำหรับลงทะเบียน Slash Commands 
-├── setup-db.js         # สคริปต์ตั้งค่าฐานข้อมูล Supabase อัตโนมัติ 
+├── src/                # ซอร์สโค้ดหลักของแอปพลิเคชัน
+│   ├── core/           # ระบบแกนหลัก (Engine) ของบอท
+│   │   └── app.js      # จัดการการเชื่อมต่อ Discord API และ SDK
+│   ├── features/       # ปลั๊กอินฟีเจอร์ต่างๆ
+│   │   ├── attendance.js
+│   │   ├── poll.js
+│   │   ├── reminders.js
+│   │   ├── help.js
+│   │   └── ping.js
+│   └── index.js        # จุดเริ่มต้นโปรแกรม (Entry Point)
+├── scripts/            # สคริปต์อรรถประโยชน์
+│   ├── command.js      # สคริปต์สำหรับลงทะเบียน Slash Commands 
+│   └── setup-db.js     # สคริปต์ตั้งค่าฐานข้อมูล Supabase อัตโนมัติ 
 ├── database.json       # ฐานข้อมูลท้องถิ่น (สำหรับระบบ Poll)
-├── nodemon.json        # ตั้งค่า Nodemon เพื่อข้ามการรีสตาร์ทเมื่อฐานข้อมูลเปลี่ยน
+├── nodemon.json        # ตั้งค่า Nodemon
 └── .env                # ไฟล์เก็บความลับ (Token, Keys, API URL)
 ```
 
@@ -64,7 +66,7 @@ DATABASE_URL=ลิงก์_Connection_String_ของ_SUPABASE
     *สคริปต์จะสร้างตาราง `attendance` และ Index ให้คุณเองอัตโนมัติ*
 
 ### 4. เริ่มรันระบบ
-1.  ลงทะเบียนคำสั่ง Slash Commands: `node command.js`
+1.  ลงทะเบียนคำสั่ง Slash Commands: `npm run register`
 2.  เริ่มรันบอท: `npm start`
 
 

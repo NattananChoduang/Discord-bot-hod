@@ -5,10 +5,10 @@
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "register": "node command.js",
-    "setup": "node setup-db.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "register": "node scripts/command.js",
+    "setup": "node scripts/setup-db.js",
     "build": "pkg . --targets node18-win-x64 --output bot.exe"
   },
   "dependencies": {
@@ -24,8 +24,8 @@
   },
   "pkg": {
     "assets": [
-      "features/**/*",
-      "core/**/*",
+      "src/features/**/*",
+      "src/core/**/*",
       "database.json"
     ]
   }
