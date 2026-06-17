@@ -101,7 +101,7 @@ LOCATIONIQ_API_KEY=รหัส_LOCATIONIQ_API_KEY
 | `/action-send` | Slash | ส่งข้อความ Action แบบโต้ตอบ (มีปุ่มรับงาน) |
 | `/action-notify` | Slash | ส่งประกาศแจ้งเตือน (ไม่มีปุ่ม) |
 | `/action-schedule` | Slash | ตั้งเวลาส่ง Action อัตโนมัติ |
-| `/action-list` | Slash | ดูรายการ Action อัตโนมัติที่ตั้งไว้ |
+| `/action-list` | Slash | ดูรายการ Action อัตโนมัติและจัดการการลบ |
 | `/help` | Slash | แสดงเมนูช่วยเหลือและวิธีใช้งาน |
 | `/ping` | Slash | ทดสอบความหน่วงของบอท |
 

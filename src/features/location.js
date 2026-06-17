@@ -30,8 +30,8 @@ module.exports = (client) => {
             }
 
             const result = searchData[0];
-            const lat = result.lat;
-            const lon = result.lon;
+            const lat = parseFloat(result.lat).toFixed(6);
+            const lon = parseFloat(result.lon).toFixed(6);
             const displayName = result.display_name;
 
             // 2. ดึงข้อมูลพยากรณ์อากาศด้วยพิกัด (Optional)
