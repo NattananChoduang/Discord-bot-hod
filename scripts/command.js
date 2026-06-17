@@ -98,6 +98,99 @@ const commands = [
     name: 'help',
     description: 'แสดงเมนูช่วยเหลือและวิธีใช้งาน 📖',
   },
+  {
+    name: 'action-send',
+    description: 'ยิงข้อความ Action (ต้องมีคนกดรับงาน) 🚀',
+    options: [
+      {
+        name: 'channel',
+        description: 'ห้องที่ต้องการส่งข้อความไป',
+        type: ApplicationCommandOptionType.Channel,
+        required: true,
+      },
+      {
+        name: 'message',
+        description: 'เนื้อหาข้อความที่ต้องการส่ง',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+    ],
+  },
+  {
+    name: 'action-notify',
+    description: 'ยิงประกาศแจ้งเตือน (ไม่ต้องกดตอบรับ) 📢',
+    options: [
+      {
+        name: 'channel',
+        description: 'ห้องที่ต้องการส่งประกาศ',
+        type: ApplicationCommandOptionType.Channel,
+        required: true,
+      },
+      {
+        name: 'message',
+        description: 'เนื้อหาประกาศ',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+    ],
+  },
+  {
+    name: 'action-schedule',
+    description: 'ตั้งเวลาส่ง Action อัตโนมัติ ⏰',
+    options: [
+      {
+        name: 'channel',
+        description: 'ห้องที่ต้องการส่ง',
+        type: ApplicationCommandOptionType.Channel,
+        required: true,
+      },
+      {
+        name: 'message',
+        description: 'ข้อความที่จะส่ง',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+      {
+        name: 'hour',
+        description: 'ชั่วโมง (0-23)',
+        type: ApplicationCommandOptionType.Integer,
+        required: true,
+      },
+      {
+        name: 'minute',
+        description: 'นาที (0-59)',
+        type: ApplicationCommandOptionType.Integer,
+        required: true,
+      },
+      {
+        name: 'days',
+        description: 'วันที่ต้องการให้ส่ง',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+        choices: [
+          { name: 'ทุกวัน', value: '*' },
+          { name: 'จันทร์-ศุกร์', value: '1-5' },
+          { name: 'เสาร์-อาทิตย์', value: '0,6' },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'action-list',
+    description: 'ดูรายการ Action อัตโนมัติที่ตั้งไว้ 📋',
+  },
+  {
+    name: 'find',
+    description: 'ค้นหาสถานที่และแผนที่ (LocationIQ) 📍',
+    options: [
+      {
+        name: 'query',
+        description: 'ชื่อสถานที่หรือที่อยู่ที่ต้องการค้นหา',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+    ],
+  },
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
@@ -107,18 +200,26 @@ const args = process.argv.slice(2);
 (async () => {
   try {
     if (args.includes('--clean')) {
-      console.log('🧹 กำลังล้างคำสั่งในเซิร์ฟเวอร์ (Guild Commands)...');
+      console.log('🧹 กำลังล้างคำสั่งทั้งหมด...');
+      // ล้าง Global Commands
+      await rest.put(Routes.applicationCommands(CLIENT_ID), { body: [] });
+      // ล้าง Guild Commands (ถ้ามี)
       await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: [] });
-      console.log('✅ ล้างคำสั่งในเซิร์ฟเวอร์สำเร็จ!');
+      console.log('✅ ล้างคำสั่งสำเร็จ!');
       return;
     }
 
-    console.log('📡 กำลังลงทะเบียนคำสั่งแบบ Global...');
+    // ล้าง Guild Commands เก่าก่อนเพื่อไม่ให้ซ้ำซ้อน
+    console.log('🧹 กำลังล้างคำสั่งเก่าในเซิร์ฟเวอร์หลัก...');
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: [] });
+
+    console.log(`🌎 กำลังลงทะเบียนคำสั่งแบบ Global (ทุกเซิร์ฟเวอร์)...`);
     await rest.put(
       Routes.applicationCommands(CLIENT_ID),
       { body: commands }
     );
-    console.log('✅ ลงทะเบียนคำสั่งแบบ Global สำเร็จ!');
+    console.log('✅ ลงทะเบียนคำสั่ง Global สำเร็จ!');
+    console.log('💡 หมายเหตุ: คำสั่ง Global อาจใช้เวลาถึง 1 ชั่วโมงในการอัปเดตให้เห็นทุกเซิร์ฟเวอร์');
   } catch (error) {
     console.error('❌ เกิดข้อผิดพลาด:', error);
   }

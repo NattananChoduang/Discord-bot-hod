@@ -10,11 +10,16 @@ module.exports = (client) => {
             .setTitle('📖 คู่มือการใช้งานบอท')
             .setDescription('นี่คือรายการคำสั่งทั้งหมดที่คุณสามารถใช้งานได้:')
             .addFields(
-                { name: '🏓 /ping', value: 'ตรวจสอบว่าบอทยังทำงานอยู่หรือไม่ (ตอบกลับด้วย Pong!)' },
-                { name: '📝 /checkin [name]', value: 'เช็คชื่อประจำวัน บันทึกลงในระบบฐานข้อมูล' },
-                { name: '⏰ /remind [message] [hours] [minutes] [seconds]', value: 'ตั้งเวลาเตือนความจำสำหรับเรื่องต่าง ๆ' },
-                { name: '🗳️ /poll [question] [option1-5]', value: 'สร้างโพลสำรวจความคิดเห็นพร้อมปุ่มกดโหวต (สูงสุด 5 ตัวเลือก)' },
-                { name: '❓ /help', value: 'แสดงเมนูช่วยเหลือและวิธีการใช้งานคำสั่งทั้งหมด' }
+                { name: '🏓 /ping', value: 'ตรวจสอบสถานะบอท' },
+                { name: '📝 /checkin [name]', value: 'เช็คชื่อประจำวัน บันทึกลงฐานข้อมูล' },
+                { name: '⏰ /remind [msg] [h/m/s]', value: 'ตั้งเวลาเตือนความจำ' },
+                { name: '🗳️ /poll [question] [opt1-5]', value: 'สร้างโพลโหวตพร้อมปุ่มกด' },
+                { name: '📍 /find [query]', value: 'ค้นหาสถานที่ แผนที่ และพยากรณ์อากาศ' },
+                { name: '🚀 /action-send [channel] [msg]', value: 'ส่งงานที่ต้องมีคนกดรับ (Action Dispatch)' },
+                { name: '📢 /action-notify [channel] [msg]', value: 'ส่งประกาศแจ้งเตือนแบบด่วน' },
+                { name: '📅 /action-schedule [channel] [msg] [time]', value: 'ตั้งเวลาส่งงานอัตโนมัติ' },
+                { name: '📋 /action-list', value: 'ดูรายการงานที่ตั้งเวลาไว้' },
+                { name: '❓ /help', value: 'แสดงเมนูช่วยเหลือนี้' }
             )
             .setFooter({ text: 'Discord Bot Help Menu', iconURL: client.user.displayAvatarURL() })
             .setTimestamp();
