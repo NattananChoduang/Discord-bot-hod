@@ -63,6 +63,7 @@ CLIENT_ID=ไอดี_DISCORD_APPLICATION_ID
 SUPABASE_URL=ลิงก์_API_URL_ของ_SUPABASE
 SUPABASE_KEY=รหัส_ANON_KEY_ของ_SUPABASE
 DATABASE_URL=ลิงก์_Connection_String_ของ_SUPABASE 
+LOCATIONIQ_API_KEY=รหัส_LOCATIONIQ_API_KEY
 ```
 
 ### 3. การตั้งค่าฐานข้อมูล (อัตโนมัติ)
