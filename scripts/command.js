@@ -203,23 +203,21 @@ const args = process.argv.slice(2);
       console.log('🧹 กำลังล้างคำสั่งทั้งหมด...');
       // ล้าง Global Commands
       await rest.put(Routes.applicationCommands(CLIENT_ID), { body: [] });
-      // ล้าง Guild Commands (ถ้ามี)
+      // ล้าง Guild Commands
       await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: [] });
       console.log('✅ ล้างคำสั่งสำเร็จ!');
       return;
     }
 
-    // ล้าง Guild Commands เก่าก่อนเพื่อไม่ให้ซ้ำซ้อน
-    console.log('🧹 กำลังล้างคำสั่งเก่าในเซิร์ฟเวอร์หลัก...');
-    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: [] });
-
-    console.log(`🌎 กำลังลงทะเบียนคำสั่งแบบ Global (ทุกเซิร์ฟเวอร์)...`);
+    console.log(`📡 กำลังลงทะเบียนคำสั่งในเซิร์ฟเวอร์หลัก (Guild ID: ${GUILD_ID})...`);
+    console.log('💡 (วิธีนี้คำสั่งจะขึ้นทันทีเพื่อการทดสอบ)');
+    
     await rest.put(
-      Routes.applicationCommands(CLIENT_ID),
+      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
       { body: commands }
     );
-    console.log('✅ ลงทะเบียนคำสั่ง Global สำเร็จ!');
-    console.log('💡 หมายเหตุ: คำสั่ง Global อาจใช้เวลาถึง 1 ชั่วโมงในการอัปเดตให้เห็นทุกเซิร์ฟเวอร์');
+    
+    console.log('✅ ลงทะเบียนคำสั่งในเซิร์ฟเวอร์สำเร็จ!');
   } catch (error) {
     console.error('❌ เกิดข้อผิดพลาด:', error);
   }
